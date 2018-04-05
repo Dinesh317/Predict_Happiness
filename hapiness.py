@@ -14,8 +14,8 @@ import string
 from sklearn.pipeline import Pipeline
 from nltk.corpus import stopwords
 
-predict_happ_train = pd.read_csv('/Users/dineshmaharana/jup/proj_happiness/train.csv')
-predict_happ_test = pd.read_csv('/Users/dineshmaharana/jup/proj_happiness/test.csv')
+predict_happ_train = pd.read_csv('train.csv')
+predict_happ_test = pd.read_csv('test.csv')
 
 def response(Response):
     if Response == 'not happy':
@@ -43,30 +43,8 @@ pipeline = Pipeline([('bow',CountVectorizer(analyzer=text_preprocess)),
                                                  alpha = 1e-3,n_iter = 5,random_state = 777))])
 pipeline.fit(x_train,y_train)
 predictions = pipeline.predict(x_test)
+
+
 from sklearn.metrics import accuracy_score
+Print('ACCURACY')
 print(accuracy_score(predictions,y_test))
-
-
-To_test = predict_happ_test['Description']
-
-test_predict = pipeline.predict(To_test)
-
-test_predict
-def text_process2(response2):
-    if response2 == 0:
-        return "not_happy"
-    else:
-        return "happy"
-import csv
-idx = []
-x = len(test_predict)+80132
-for i in range(80132,x):
-    y = "id"+str(i)
-    idx = np.append(idx,y)
-dict = {'User_ID':idx,'Is_Response':test_predict}
-
-csv1 = pd.DataFrame(dict)
-csv1['Is_Response'] = csv1['Is_Response'].apply(text_process2)
-csv1.set_index('User_ID',inplace = True)
-
-csv1.to_csv('/home/vinod/PycharmProjects/udemy_course/test_prediction_new.csv')
